@@ -43,6 +43,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 
+# this is heuristically generated, and may not be correct
+find_package(imgui CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
+
 # Packages End
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
