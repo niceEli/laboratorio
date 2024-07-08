@@ -38,6 +38,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
 find_package(Vulkan REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Vulkan::Vulkan)
 
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
+
 # Packages End
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
