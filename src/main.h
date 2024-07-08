@@ -5,4 +5,6 @@
 
 #include <iostream>
 
+int run(int argc, char *argv[]);
+
 // TODO: Reference additional headers your program requires here.

@@ -3,18 +3,12 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-# Get the VCPKG_ROOT environment variable
-if(NOT DEFINED ENV{VCPKG_ROOT})
-    message(FATAL_ERROR "Environment variable VCPKG_ROOT is not set.")
-endif()
-
-set(VCPKG_ROOT $ENV{VCPKG_ROOT})
-
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
+
 
 project ("vulPlay")
 
@@ -27,7 +21,7 @@ file(GLOB_RECURSE src
       "./src/*.cpp"
 )
 
-add_executable (${PROJECT_NAME} ${src})
+add_executable (${PROJECT_NAME} "./init.cpp" ${src})
 
 # Packages Start
 

@@ -1,11 +1,9 @@
 ﻿#include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 
-int main(void)
+int run(int argc, char *argv[])
 {
-
     GLFWwindow *window;
 
     /* Initialize the library */
