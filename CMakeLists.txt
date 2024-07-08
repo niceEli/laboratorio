@@ -21,7 +21,9 @@ file(GLOB_RECURSE src
       "./src/*.cpp"
 )
 
-add_executable (${PROJECT_NAME} "./init.cpp" ${src})
+list(REMOVE_ITEM src "./src/main.cpp")
+
+add_executable (${PROJECT_NAME} "./src/main.cpp" ${src})
 
 # Packages Start
 

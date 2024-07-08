@@ -6,13 +6,16 @@
 #include <iostream>
 #include <stdexcept>
 
-int run(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-    lve::FirstApp app {};
+    lve::FirstApp app{};
 
-    try {
+    try
+    {
         app.run();
-    } catch (const std::exception &e) {
+    }
+    catch (const std::exception &e)
+    {
         std::cerr << e.what() << std::endl;
         return EXIT_FAILURE;
     }
