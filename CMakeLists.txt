@@ -53,4 +53,60 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)
 endif()
 
-# TODO: Add tests and install targets if needed.
+############## Build SHADERS #######################
+
+# Find all vertex and fragment sources within shaders directory
+# taken from VBlancos vulkan tutorial
+# https://github.com/vblanco20-1/vulkan-guide/blob/all-chapters/CMakeLists.txt
+find_program(GLSL_VALIDATOR glslangValidator HINTS 
+  ${Vulkan_GLSLANG_VALIDATOR_EXECUTABLE} 
+  /usr/bin 
+  /usr/local/bin 
+  $ENV{VULKAN_SDK}/Bin/ 
+  $ENV{VULKAN_SDK}/Bin32/
+)
+
+message(STATUS "glslangValidator: ${GLSL_VALIDATOR}")
+
+# get all .vert and .frag files in shaders directory
+file(GLOB_RECURSE GLSL_SOURCE_FILES
+  "${PROJECT_SOURCE_DIR}/shaders/*.frag"
+  "${PROJECT_SOURCE_DIR}/shaders/*.vert"
+)
+
+message(STATUS "GLSL_SOURCE_FILES: ${GLSL_SOURCE_FILES}")
+
+# Assume BUILT_FILES_DIR is defined elsewhere or set it here
+set(BUILT_FILES_DIR "${CMAKE_BINARY_DIR}/shaders")
+
+# Create output directory
+file(MAKE_DIRECTORY ${BUILT_FILES_DIR})
+
+# List to store SPIR-V files
+set(SPIRV_BINARY_FILES "")
+
+# Create custom commands and dependencies for each shader file
+foreach(GLSL ${GLSL_SOURCE_FILES})
+  get_filename_component(FILE_NAME ${GLSL} NAME)
+  set(SPIRV "${BUILT_FILES_DIR}/${FILE_NAME}.spv")
+  
+  add_custom_command(
+    OUTPUT ${SPIRV}
+    COMMAND ${GLSL_VALIDATOR} ${GLSL} -V -o ${SPIRV}
+    DEPENDS ${GLSL}
+    COMMENT "Compiling ${GLSL} to ${SPIRV}"
+    VERBATIM
+  )
+
+  list(APPEND SPIRV_BINARY_FILES ${SPIRV})
+endforeach()
+
+# Create a custom target that depends on all the SPIR-V files
+add_custom_target(compile_shaders ALL DEPENDS ${SPIRV_BINARY_FILES})
+
+# Ensure the main project depends on the compile_shaders target
+add_dependencies(${PROJECT_NAME} compile_shaders)
+
+message(STATUS "BUILT_SHA_FILES_DIR: ${BUILT_FILES_DIR}")
+
+## end of build shaders
