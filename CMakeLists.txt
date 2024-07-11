@@ -47,6 +47,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 
+find_package(tinyobjloader CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE tinyobjloader::tinyobjloader)
+
 # Packages End
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
